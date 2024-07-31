@@ -1,0 +1,16 @@
+{% extends 'ecf/_email/_layout' %}
+
+{% block content %}
+	<h1>Interest request</h1>
+	<ul>
+		<li>{{model.fullName}}</li>
+		<li>{{model.jobTitle}}</li>
+		<li>{{model.companyName}}</li>
+		<li>{{model.businessPhoneNumber}}</li>
+		<li>{{model.businessEmail}}</li>
+		<li>{{model.numberOfClients}}</li>
+		<li>{{model.showsPerYear}}</li>
+		<li>{{model.contactCountry}}</li>
+		<li>{{model.comments}}</li>
+	</ul>
+{% endblock %}

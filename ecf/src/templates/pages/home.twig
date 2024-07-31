@@ -1,0 +1,254 @@
+{% extends 'ecf/_layout' %}
+{% import '_includes/forms.twig' as forms %}
+
+{% set selectedSubnavItem = 'home' %}
+{% set shows = craft.entries.section('shows').all() %}
+{% set section = craft.app.entries.getSectionByHandle('contactForm') ?? '' %}
+{% block header %}
+	<h1>Expo Contact Form Checklist</h1>
+{% endblock %}
+{% block content %}
+	{% css %}
+		.snippet {
+			background: lightgray;
+			padding: 3px;
+			border-radius: 5px;
+		}
+	{% endcss %}
+	<p>This page will read this craft config to notify you if there are missing pieces. Please use this as your installation guide. The page will need to be refreshed after you make a change to trigger the validation.</p>
+	<div class="flex-fields">
+		<h3>Contact Form Entry</h3>
+		<div class="field width-25">
+			<div class="card" style="flex-direction: column !important">
+				<h4> Section </h4>
+				<div class="card-body">
+					{% if section == '' %}
+						<div class="readable">
+							<blockquote class="note danger">Section not found</blockquote>
+						</div>
+						<p>This plugin requires a Contact Form section. Please create Contact Form first.</p>
+						<a class="btn" href="/admin/settings/sections/new">New Section</a>
+					{% else %}
+						<div class="readable">
+							<p class="flex">
+								<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="30" height="30" viewBox="0 0 40 40">
+									<path fill="#bae0bd" d="M20,38.5C9.8,38.5,1.5,30.2,1.5,20S9.8,1.5,20,1.5S38.5,9.8,38.5,20S30.2,38.5,20,38.5z"></path><path fill="#5e9c76" d="M20,2c9.9,0,18,8.1,18,18s-8.1,18-18,18S2,29.9,2,20S10.1,2,20,2 M20,1C9.5,1,1,9.5,1,20s8.5,19,19,19	s19-8.5,19-19S30.5,1,20,1L20,1z"></path><path fill="none" stroke="#fff" stroke-miterlimit="10" stroke-width="3" d="M11.2,20.1l5.8,5.8l13.2-13.2"></path>
+								</svg>
+								<span class="success">Complete</span>
+							</p>
+						</div>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+		<div class="field width-50">
+			<div class="card" style="flex-direction: column !important">
+				<h4>Fields</h4>
+				<p>Make sure you have these fields in your Contact Form Section.</p>
+				<ol>
+					<li>Full Name -> fullName -> plain text </li>
+					<li>Job Title -> jobTitle -> plain text</li>
+					<li>Company Name -> companyName -> plain text</li>
+					<li>Business Phone Number -> businessPhoneNumber -> plain text</li>
+					<li>Business Email -> businessEmail -> email </li>
+					<li>Number of Clients -> numberOfClients -> number </li>
+					<li>Shows Per Year -> showsPerYear -> number </li>
+					<li>Contact Country -> contactCountry -> country</li>
+					<li>Comments -> comments -> text</li>
+				</ol>
+			</div>
+		</div>
+	</div>
+	<hr />
+	<div class="flex-fields">
+		<h3>Email</h3>
+		<p>Please download and install the plugin for mailchimp.<br /><span class="code snippet">composer require "perfectwebteam/craft-mailchimp-transactional:^2.1.0" -w && php craft plugin/install mailchimp-transactional</span></p>
+		<div class="field width-25">
+			<div class="card" style="flex-direction: column !important">
+				<h4> .env Vars </h4>
+				<div class="card-body">
+					{% if mailKey == '' or subAccount == '' %}
+						<div class="readable">
+							<blockquote class="note danger">Missing Enironment variables</blockquote>
+						</div>
+						<p>Please request a mandril api key. These values are meant for your .env file</p>
+					{% else %} 
+						<div class="readable">
+							<p class="flex">
+								<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="30" height="30" viewBox="0 0 40 40">
+									<path fill="#bae0bd" d="M20,38.5C9.8,38.5,1.5,30.2,1.5,20S9.8,1.5,20,1.5S38.5,9.8,38.5,20S30.2,38.5,20,38.5z"></path><path fill="#5e9c76" d="M20,2c9.9,0,18,8.1,18,18s-8.1,18-18,18S2,29.9,2,20S10.1,2,20,2 M20,1C9.5,1,1,9.5,1,20s8.5,19,19,19	s19-8.5,19-19S30.5,1,20,1L20,1z"></path><path fill="none" stroke="#fff" stroke-miterlimit="10" stroke-width="3" d="M11.2,20.1l5.8,5.8l13.2-13.2"></path>
+								</svg>
+								<span class="success">Keys found</span>
+							</p>
+						</div>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+		<div class="field width-25">
+			<div class="card" style="flex-direction: column !important">
+				<h4>Mailer</h4>
+				<div class="card-body">
+					<p>current Mailer: <span class="code snippet">{{mailer}}</span> </p>
+				</div>
+				{% set split = mailer|split('\\') %}
+				{% set count = split|length %}
+				{% set name = split[count-1] %}
+				{% if name != 'MailchimpTransactionalAdapter' %}
+					<div class="readable">
+						<blockquote class="note danger">Incorrect Mailer Set</blockquote>
+					</div>
+					<p>Please go to the settings tab and set your mailer in the mail section </p>
+					<a href="/admin/settings/email">settings</a>
+				{% else %}
+					<div class="readable">
+						<p class="flex">
+							<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="30" height="30" viewBox="0 0 40 40">
+								<path fill="#bae0bd" d="M20,38.5C9.8,38.5,1.5,30.2,1.5,20S9.8,1.5,20,1.5S38.5,9.8,38.5,20S30.2,38.5,20,38.5z"></path><path fill="#5e9c76" d="M20,2c9.9,0,18,8.1,18,18s-8.1,18-18,18S2,29.9,2,20S10.1,2,20,2 M20,1C9.5,1,1,9.5,1,20s8.5,19,19,19	s19-8.5,19-19S30.5,1,20,1L20,1z"></path><path fill="none" stroke="#fff" stroke-miterlimit="10" stroke-width="3" d="M11.2,20.1l5.8,5.8l13.2-13.2"></path>
+							</svg>
+							<span class="success">Matching</span>
+						</p>
+					</div>
+				{% endif %}
+			</div>
+		</div>
+		<div class="field width-25">
+			<div class="card" style="flex-direction: column !important">
+				<h4>Mailer</h4>
+				<div class="card-body">
+					<p>Ensure there is a user group Marketing Recipient (marketingRecipient). This group requires no special permissions and may be tied to User in the craft users panel. This group may contain more than one user and will be used as the marketing email recipients. </p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<hr />
+	<div class="content-form">
+		{% set countries = craft.app.addresses.getCountryRepository().getAll() %}
+		{% set entry = entry ?? '' %}
+
+		<div id="main">
+			<div class="container">
+				<form method="POST">
+					{{csrfInput()}}
+					{{actionInput('ecf/ecf/contact-submit')}}
+					<div class="field">
+						<div class="heading"> 
+							<label for="fullName" style="{{entry and entry.getErrors('fullName') ? 'color:red' : ''}}"> Full Name</label>
+						</div>
+						<div class="input ltr">
+							<input class="text fullwidth" dir="ltr" type="text" name="fullName" id="fullName" value="{{entry.fullName ?? ''}}"/> <br />
+							{% if entry and entry.getErrors('fullName') %}
+								<span>{{entry.getErrors('fullName')[0]}}</span><br />
+							{% endif %}
+						</div>
+					</div>
+
+					<div class="field">
+						<div class="heading"> 
+							<label for="companyName" style="{{entry and entry.getErrors('companyName') ? 'color:red' : ''}}">Company Name</label>
+						</div>
+						<div class="input ltr">
+							<input type="text" class="text fullwidth" name="companyName" value="{{entry.companyName ?? ''}}"/> <br />
+							{% if entry and entry.getErrors('companyName') %}
+								<span>{{entry.getErrors('companyName')[0]}}</span><br />
+							{% endif %}
+						</div>
+					</div>
+
+					<div class="field">
+						<div class="heading"> 
+							<label for="businessEmail" style="{{entry and entry.getErrors('businessEmail') ? 'color:red' : ''}}">Business Email</label>
+						</div>
+						<div class="input ltr">
+							<input type="email" class="text fullwidth" name="businessEmail" value="{{entry.businessEmail ?? ''}}"/> <br />
+							{% if entry and entry.getErrors('businessEmail') %}
+								<span>{{entry.getErrors('businessEmail')[0]}}</span><br />
+							{% endif %}
+						</div>
+					</div>
+
+					<div class="field">
+						<div class="heading"> 
+							<label for="businessPhoneNumber" style="{{entry and entry.getErrors('businessPhoneNumber') ? 'color:red' : ''}}">Business Phone Number</label>
+						</div>
+						<div class="input ltr">
+							<input type="text" class="text fullwidth" name="businessPhoneNumber" value="{{entry.businessPhoneNumber ?? ''}}"/> <br />
+							{% if entry and entry.getErrors('businessPhoneNumber') %}
+								<span>{{entry.getErrors('businessPhoneNumber')[0]}}</span><br />
+							{% endif %}
+						</div>
+					</div>
+
+					<div class="field">
+						<div class="heading"> 
+							<label for="jobTitle" style="{{entry and entry.getErrors('jobTitle') ? 'color:red' : ''}}">Job Position/Title</label>
+						</div>
+						<div class="input ltr">
+							<input type="text" class="text fullwidth" name="jobTitle" value="{{entry.jobTitle ?? ''}}"/> <br />
+							{% if entry and entry.getErrors('jobTitle') %}
+								<span>{{entry.getErrors('jobTitle')[0]}}</span><br />
+							{% endif %}
+						</div>
+					</div>
+
+					<div class="field">
+						<div class="heading"> 
+							<label for="showsPerYear" style="{{entry and entry.getErrors('showsPerYear') ? 'color:red' : ''}}">Number of Shows (Per Year)</label>
+						</div>
+						<div class="input ltr">
+							<input type="number" class="text fullwidth" name="showsPerYear" value="{{entry.showsPerYear ?? ''}}"/>
+							{% if entry and entry.getErrors('showsPerYear') %}
+								<span>{{entry.getErrors('showsPerYear')[0]}}</span>
+							{% endif %}
+						</div>
+					</div>
+
+					<div class="field">
+						<div class="heading"> 
+							<label for="numberOfClients" style="{{entry and entry.getErrors('numberOfClients') ? 'color:red' : ''}}">Number of Clients</label>
+						</div>
+						<div class="input ltr">
+							<input type="number" class="text fullwidth" name="numberOfClients" value="{{entry.numberOfClients ?? ''}}"/>
+							{% if entry and entry.getErrors('numberOfClients') %}
+								<span>{{entry.getErrors('numberOfClients')[0]}}</span>
+							{% endif %}
+						</div>
+					</div>
+
+					<div class="field">
+						<div class="heading"> 
+							<label for="country" style="{{entry and entry.getErrors('contactCountry') ? 'color:red' : ''}}">Country</label>
+						</div>
+						<div class="input ltr">
+							<select class="select fullwidth" name="contactCountry">
+								<option value="">Select a Country</option>
+								{% for country in countries %}
+									{{ tag('option', {
+										text: country.name,
+										value: country.countryCode,
+										selected: country.countryCode == entry.contactCountry ?? ''
+									}) }}
+								{% endfor %} 
+							</select>
+							{% if entry and entry.getErrors('contactCountry') %}
+								<span>{{entry.getErrors('contactCountry')[0]}}</span>
+							{% endif %}
+						</div>
+					</div>
+
+					<div class="field">
+						<div class="heading"> 
+							<label for="comments">Comments</label>
+						</div>
+						<div class="input ltr">
+							<textarea name="comments" class="nicetext text fullwidth" rows="5" cols="100" value="value="{{entry.comments ?? ''}}"" ></textarea><br />
+						</div>
+					</div>
+					{# 	{{ craft.recaptcha.renderBindButton('my-submit-button-html-id') }}
+					<button id="my-submit-button-html-id" type="submit">Send<button> #}
+					<button class="btn submit" type="submit">submit</button>
+				</form>
+			</div>
+		</div>
+	</div>
+{% endblock %}

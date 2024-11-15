@@ -3,7 +3,7 @@
 	"description": "General Contact Form plugin with email",
 	"type": "craft-plugin",
 	"license": "MIT",
-	"version": "0.1.0",
+	"version": "1.0",
 	"authors": [{
 		"name": "Lucas Reid",
 		"email": "lreid@brandgage.com"
@@ -14,7 +14,7 @@
 	},
 	"autoload": {
 		"psr-4": {
-			"brandgage\\ExpoContactForm\\ecf\\": "src/"
+			"brandgage\\expo-contact-form\\": "src/"
 		}
 	},
 	"extra": {

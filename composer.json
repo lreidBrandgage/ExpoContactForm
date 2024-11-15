@@ -6,7 +6,7 @@
     "license": "MIT",
     "authors": [{
         "name": "Lucas Reid",
-        "email": "n/a"
+        "email": "lreid@brandgage.com"
     }],
     "require": {
         "php": ">8.0"

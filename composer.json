@@ -14,7 +14,7 @@
 	},
 	"autoload": {
 		"psr-4": {
-			"ecf\\": "src/"
+			"brandgage\\expo-contact-form\\": "src/"
 		}
 	},
 	"extra": {
@@ -22,7 +22,7 @@
 		"name": "Expo Contact Form",
 		"developer": "lreid@brandgage.com",
 		"documentationUrl": "???",
-		"class": "brandgage\\expocontactform\\ExpoContactForm"
+		"class": "brandgage\\expo-contact-form\\src\\ExpoContactForm"
 	},
 	"config": {
 		"sort-packages": true,

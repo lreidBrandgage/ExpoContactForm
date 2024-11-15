@@ -14,7 +14,7 @@
 	},
 	"autoload": {
 		"psr-4": {
-			"expo-contact-form\\": "src/"
+			"brandgage\\expocontactform\\": "src/"
 		}
 	},
 	"extra": {

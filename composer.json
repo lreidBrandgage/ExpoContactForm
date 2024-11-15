@@ -1,19 +1,37 @@
 {
-    "name": "brandgage/expo-contact-form",
-    "type": "library",
-    "description": "General use contact form plugin",
-    "homepage": "https://github.com/lreidBrandgage/ExpoContactForm",
-    "license": "MIT",
-    "authors": [{
-        "name": "Lucas Reid",
-        "email": "lreid@brandgage.com"
-    }],
-    "require": {
-        "php": ">8.0"
-    },
-    "autoload": {
-        "psr-4": {
-            "ecf\\": "src/"
-        }
-    }
+	"name": "brandgage/expo-contact-form",
+	"description": "General Contact Form plugin with email",
+	"type": "craft-plugin",
+	"license": "MIT",
+	"version": "0.1.0",
+	"authors": [{
+		"name": "Lucas Reid",
+		"email": "lreid@brandgage.com"
+	}],
+	"require": {
+		"php": ">=8.1.0",
+		"craftcms/cms": "^5.0.0-beta.9"
+	},
+	"autoload": {
+		"psr-4": {
+			"brandgage\\ecf\\": "src/"
+		}
+	},
+	"extra": {
+		"handle": "ecf",
+		"name": "Expo Contact Form",
+		"developer": "lreid@brandgage.com",
+		"documentationUrl": "???",
+		"class": "brandgage\\expo-contact-form\\ecf\\ExpoContactForm"
+	},
+	"config": {
+		"sort-packages": true,
+		"platform": {
+			"php": "8.2"
+		},
+		"allow-plugins": {
+			"yiisoft/yii2-composer": true,
+			"craftcms/plugin-installer": true
+		}
+	}
 }
